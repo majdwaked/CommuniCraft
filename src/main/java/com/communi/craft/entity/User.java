@@ -21,16 +21,13 @@ public class User implements UserDetails
     private Long userId;
 
     @Column(nullable = false, length = 50)
-    private String username;
+    private String name;
 
     @Column(nullable = false, length = 100)
     private String email;
 
     @Column(nullable = false, length = 100)
     private String password;
-
-    @Column(length = 255)
-    private String profilePicture;
 
     @Column(columnDefinition = "TEXT")
     private String bio;
@@ -46,6 +43,12 @@ public class User implements UserDetails
     public Collection<? extends GrantedAuthority> getAuthorities()
     {
         return List.of(new SimpleGrantedAuthority(userType.name()));
+    }
+
+    @Override
+    public String getUsername()
+    {
+        return email;
     }
 
     @Override

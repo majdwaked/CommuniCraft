@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 public class Response <T>
 {
-    private boolean status;
+    private int status;
 
     private String message;
 
