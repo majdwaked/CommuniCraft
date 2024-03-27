@@ -1,10 +1,11 @@
 package com.communi.craft.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "ProjectSkills")
+@Table(name = "projectskills")
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,6 +18,7 @@ public class ProjectSkill
 
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @JsonIgnore
     private Project project;
 
     @ManyToOne

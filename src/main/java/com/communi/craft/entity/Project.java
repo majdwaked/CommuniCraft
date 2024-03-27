@@ -1,11 +1,13 @@
 package com.communi.craft.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Projects")
+@Table(name = "projects")
 @Data
 @Builder
 @NoArgsConstructor
@@ -26,20 +28,35 @@ public class Project
     @Column(nullable = false)
     private DifficultyLevel difficultyLevel;
 
+    @Column(nullable = false)
+    private Integer groupSize;
+
     @ManyToOne
     @JoinColumn(name = "creator_id")
+    @JsonIgnore
     private User creator;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private ProjectCategory category;
 
-    @OneToMany(mappedBy = "project")
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
+    @JsonIgnore
+    private UserProfile userProfile;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectSkill> projectSkills;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectInterest> projectInterests;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectCollaborator> projectCollaborators;
+
+    @JsonProperty("creator_id")
+    public Long getCreatorId()
+    {
+        return creator != null ? creator.getUserId() : null;
+    }
 }

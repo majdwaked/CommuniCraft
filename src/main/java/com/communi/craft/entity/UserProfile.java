@@ -5,31 +5,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
-@Table(name = "projectcollaborators")
+@Table(name = "userprofiles")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectCollaborator
+public class UserProfile
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long projectCollaboratorId;
+    private Long profileId;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    @JsonIgnore
-    private Project project;
+    @Column(name = "profile_name")
+    private String profileName;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL)
+    private List<Project> projects;
 
     @JsonProperty("user_id")
     public Long getUserId()
