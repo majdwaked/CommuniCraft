@@ -1,9 +1,7 @@
 package com.communi.craft.service;
 
 import com.communi.craft.config.JwtService;
-import com.communi.craft.entity.Project;
-import com.communi.craft.entity.ProjectInterest;
-import com.communi.craft.entity.ProjectSkill;
+import com.communi.craft.entity.*;
 import com.communi.craft.error.NotFoundException;
 import com.communi.craft.error.UnauthorizedException;
 import com.communi.craft.repository.*;
@@ -90,9 +88,11 @@ public class ProjectService
 
         var interests = Arrays.stream(request.getInterests()).map(id -> ProjectInterest.builder().project(project).interest(craftInterestRepository.findById(id).get()).build()).toList();
         var skills = Arrays.stream(request.getSkills()).map(id -> ProjectSkill.builder().project(project).skill(craftSkillRepository.findById(id).get()).build()).toList();
+        var creator = ProjectCollaborator.builder().project(project).user(user.get()).role(Role.creator).build();
 
-        project.setProjectInterests(interests);
         project.setProjectSkills(skills);
+        project.setProjectInterests(interests);
+        project.setProjectCollaborators(List.of(creator));
 
         projectRepository.save(project);
 
